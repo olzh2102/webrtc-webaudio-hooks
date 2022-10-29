@@ -4,6 +4,9 @@ import * as React from 'react';
  * @param    {MediaStream} source
  *           audio source (microphone)
  *
+ * @param    {number} fftSize
+ *           FFT size to cover certain range of frequencies
+ *
  * @return   {boolean}
  *           boolean value indicating if the source active
  *
@@ -34,7 +37,7 @@ export default function useIsAudioActive({
   source: MediaStream | null;
   fftSize?: 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768;
 }) {
-  const [isSpeaking, setIsSpeaking] = React.useState(false);
+  const [isActive, setIsActive] = React.useState(false);
 
   React.useEffect(() => {
     if (!source) return;
@@ -58,17 +61,17 @@ export default function useIsAudioActive({
       const sum = dataArray.reduce((a, b) => a + b, 0);
 
       if (sum / dataArray.length / 128.0 >= 1) {
-        setIsSpeaking(true);
-        setTimeout(() => setIsSpeaking(false), 1000);
+        setIsActive(true);
+        setTimeout(() => setIsActive(false), 1000);
       }
 
       requestAnimationFrame(update);
     }
 
     return () => {
-      setIsSpeaking(false);
+      setIsActive(false);
     };
   }, [source]);
 
-  return isSpeaking;
+  return isActive;
 }
