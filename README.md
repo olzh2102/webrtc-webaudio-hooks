@@ -5,15 +5,6 @@
 </div>
 
 ---
-
-<!-- prettier-ignore-start -->
-[![version][version-badge]][package]
-[![downloads][downloads-badge]][npmtrends]
-[![MIT License][license-badge]][license]
-[![All Contributors][all-contributors-badge]](#contributors-)
-[![PRs Welcome][prs-badge]][prs]
-[![Code of Conduct][coc-badge]][coc]
-<!-- prettier-ignore-end -->
 ## Why this exists
 
 While working on one project, we have realized that some functionalities from WebRTC and WebAudio APIs can be abstracted in certain hooks for further easier usage.
