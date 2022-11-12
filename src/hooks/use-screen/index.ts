@@ -32,10 +32,11 @@ import { useState } from 'react';
  *    );
  *  }
  */
-const useScreen = (stream: MediaStream | null) => {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'rejected'>(
-    'idle',
-  );
+
+type Status = 'idle' | 'loading' | 'success' | 'rejected';
+
+export default function useScreen(stream: MediaStream | null) {
+  const [status, setStatus] = useState<Status>('idle');
   const [screenTrack, setScreenTrack] = useState<MediaStreamTrack | null>(null);
 
   /**
@@ -92,6 +93,4 @@ const useScreen = (stream: MediaStream | null) => {
     isSuccess: status === 'success',
     isError: status === 'rejected',
   };
-};
-
-export default useScreen;
+}
