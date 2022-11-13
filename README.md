@@ -14,7 +14,13 @@ While working on one project, we have realized that some functionalities from We
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Why this exists](#why-this-exists)
+- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
+- [Usage](#usage)
+  - [use-media-stream](#use-media-stream)
+  - [use-screen](#use-screen)
+  - [use-is-audio-active](#use-is-audio-active)
 - [Other Solutions](#other-solutions)
 - [Issues](#issues)
   - [🐛 Bugs](#-bugs)
@@ -36,6 +42,118 @@ npm install --save webrtc-webaudio-hooks
 ```shell
 yarn add webrtc-webaudio-hooks
 ```
+
+## Usage
+
+### use-media-stream
+
+```jsx
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { useMediaStream } from 'webrtc-webaudio-hooks'
+
+function ExampleComponent() {
+  const {stream, isLoading, muted, toggleVideo} = useMediaStream()
+
+  if (isLoading) return <span>Getting your stream ready...😉</span>
+
+  return (
+    <>
+      <video srcObject={stream} autoPlay />
+      <ControlPanel muted={muted} toggleVideo={toggleVideo} />
+    </>
+  )
+}
+```
+
+```typescript
+// API
+
+return {
+  // MediaStream representing stream of media content
+  stream: MediaStream,
+  // Boolean value representing whether current stream is muted
+  muted: boolean,
+  // Boolean value representing whether current stream is visible
+  visible: boolean,
+  // Function to change "muted" state to opposite
+  toggleAudio: () => void,
+  // Function to change "visible" state (including webcam light indicator)
+  toggleVideo: (onTurnCamOn?: (track: MediaTrack) => void) => void,
+  // Boolean status representing MediaStream is getting created
+  isLoading: boolean,
+  // Boolean status representing whether creating MediaStream is failed
+  isError: boolean
+  // Boolean status representing whether creating MediaStream is successful
+  isSuccess: boolean
+}
+```
+
+### use-screen
+```jsx
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { useScreen } from 'webrtc-webaudio-hooks'
+
+function ExampleComponent({stream}: {stream: MediaStream}) {
+  const {startShare, stopShare} = useScreen(stream)
+
+  return <ControlPanel startShareMyScreen={startShare} stopShareMyScreen={stopShare} />
+}
+```
+
+```typescript
+// API
+
+return {
+  // MediaStreamTrack representing stream of media display content
+  screenTrack: MediaStreamTrack,
+  // Function that creates display media, and takes two callbacks as arguments:
+  // @param onstarted - an optional function that is called when screen sharing is started
+  // @param onended - an optional function that is called when screen sharing is stopped
+  startShare: (
+    onstarted?: () => void,
+    onended?: () => void
+  ) => void,
+  // Boolean value representing whether current stream is visible
+  stopShare: (screenTrack: MediaStreamTrack) => void
+}
+```
+### use-is-audio-active
+```jsx
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { useIsAudioActive } from 'webrtc-webaudio-hooks'
+
+function ExampleComponent() {
+  const [stream, setStream] = React.useState(null)
+  const isActive = useIsAudioActive({ source: stream });
+
+  React.useEffect(() => {
+    (async function createStream() {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+      setStream(stream)
+    })()
+  }, [])  
+  
+  return (
+    <p>
+      Am I speaking: {' '} { isActive ? 'yes, you are 🕺' : "seems like ain't 🦻" }
+    </p>
+  )
+}
+```
+```typescript
+// API
+
+// Boolean value representing whether audio stream is active (checks every second)
+return isAcive
+```
+
+
 ## Other Solutions
 
 [use-is-audio-active](https://github.com/olzh2102/use-is-audio-active)

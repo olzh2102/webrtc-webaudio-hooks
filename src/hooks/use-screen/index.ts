@@ -51,6 +51,7 @@ const useScreen = (stream: MediaStream | null) => {
     try {
       if (!stream) return;
 
+      // @ts-ignore
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: false,
