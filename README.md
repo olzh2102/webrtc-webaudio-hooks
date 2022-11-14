@@ -114,7 +114,7 @@ return {
   startShare: (
     onstarted?: () => void,
     onended?: () => void
-  ) => void,
+  ) => Promise<void>,
   // Boolean value representing whether current stream is visible
   stopShare: (screenTrack: MediaStreamTrack) => void
 }
