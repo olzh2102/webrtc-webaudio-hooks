@@ -65,6 +65,9 @@
     "react",
     "react hooks",
     "typescript",
-    "npm"
+    "npm",
+    "webrtc",
+    "webaudio",
+    "mediastream"
   ]
 }
